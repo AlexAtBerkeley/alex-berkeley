@@ -41,7 +41,7 @@ enableRobotsTXT = true # IMPORTANT: set to true if you want to use the theme's g
         enable = true
         [markup.goldmark.extensions.passthrough.delimiters]
           block = [['\[', '\]'], ['$$', '$$']]
-          inline = [['\(', '\)']]
+          inline = [['$', '$'], ['\(', '\)']]
 
 [params]
   math = true
