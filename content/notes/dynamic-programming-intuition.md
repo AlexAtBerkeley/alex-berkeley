@@ -49,7 +49,7 @@ It may not be obvious, but the input data is already topologically sorted for us
 
 As we can see, the longest increasing subsequence has a length of 4, more importantly, this is the same as the length of the longest path in our DAG! Hence, we have applied a very important concept in computing theory-- We used {{< sidenote "reduction" >}}Transforming an often challenging problem into an existing problem whose solution is known{{< /sidenote >}} to transform the Longest Increasing Subsequences problem to the DAG longest path problem! 
 
-To do this, t each index $i$, we tabulate the Longest Increasing Sequence that ends at and includes the element at $i$. To calculate this length, we iterate again over all preceding indices. We find the longest increasing subsequence in that subarray, and we just add one to that value to find the Longest Increasing Sequence at index $i$.
+To do this, on each index $i$, we tabulate the Longest Increasing Sequence that ends at and includes the element at $i$. To calculate this length, we iterate again over all preceding indices. We find the longest increasing subsequence in that subarray, and we just add one to that value to find the Longest Increasing Sequence at index $i$.
 
 ```cpp
 int lengthOfLIS(vector<int>& A) {
@@ -67,11 +67,11 @@ int lengthOfLIS(vector<int>& A) {
 ```
 $\boxed{ }$
 ## [Maximum Height by Stacking Cuboids](https://leetcode.com/problems/maximum-height-by-stacking-cuboids/)
-**Problem:** Given `n` `cuboids` where the dimensions of the `ith` cuboid is `cuboids[i] = [widthi, lengthi, heighti]` (**0-indexed**). Choose a **subset** of `cuboids` and place them on each other.
+**Problem:** Given `n` cuboids where the dimensions of the `ith` cuboid is`A[i] = [width_i, length_i, height_i]` (**0-indexed**). Choose a **subset** of cuboids and place them on each other.
 
-You can place cuboid `i` on cuboid `j` if `widthi <= widthj` and `lengthi <= lengthj` and `heighti <= heightj`. You can rearrange any cuboid's dimensions by rotating it to put it on another cuboid.
+You can place cuboid `i` on cuboid `j` if `width_i <= widthj` and `length_i <= length_j` and `height_i <= height_j`. You can rearrange any cuboid's dimensions by rotating it to put it on another cuboid.
 
-Return _the **maximum height** of the stacked_ `cuboids`.
+Return _the **maximum height** of the stacked_ cuboids.
 
 **Solution:** Once again, we note down what we know about this problem, and any intuition we have. We are given the freedom to freely rotate cuboids, moreover, cuboids may only be stacked on one another if all three dimensions of a cuboid are smaller or equal to  the cuboid it is being stacked on. This points at a greedy/DP solution.
 
@@ -106,3 +106,4 @@ int maxHeight(vector<vector<int>>& A) {
 return res;
 }
 ```
+$\boxed{ }$
