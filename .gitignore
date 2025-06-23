@@ -1,0 +1,6 @@
+.obsidian
+.venv
+template
+node_modules
+public
+assets
