@@ -1,8 +1,11 @@
 ---
-title: The Intuition Behind Dynammic Programming
+title: Cracking Dynammic Programming
 date: 2025-06-23
 categories:
   - Algorithms
+  - DAGs
+  - Dynammic Programming
+description: All dynamic programming problems may be modeled as a DAG of sub problems. Once you topologically sort that DAG, even tricky challenges, like finding the longest increasing subsequence or stacking cuboids, become as simple as tracing the longest path through your map.
 ---
 
 # So what is Dynamic Programming Anyways?
@@ -13,7 +16,7 @@ Solving problems is all about identifying connections between bits of informatio
 
 ![Directed Acyclic Graph](/images/dynamic_programming_intuition/DAG.png)
 
-It should be intuitive why a DAG is often referred to as a dependency graph by programmers. It provides a structure that encapsulates information about all the dependencies that is required by a certain service, process, and in our case, problem. A **topological sort** of a DAG is an ordering of the vertices $V$, such that all the dependencies of $u$ appears before $u$ itself. In the Such a sort allows us to traverse the graph from pre-requisite to dependency. A toplogical sort exists for all DAGs, but not all directed graphs. Do you see why?
+It should be intuitive why a DAG is often referred to as a dependency graph by programmers. It provides a structure that encapsulates information about all the dependencies that is required by a certain service, process, and in our case, problem. A **topological sort** of a DAG is an ordering of the vertices $V$, such that all the dependencies of $u$ appears before $u$ itself. Such a sort allows us to traverse the graph from pre-requisite to dependency. A toplogical sort exists for all DAGs, but not all directed graphs. Do you see why?
 
 ### The Topological Sort Algorithm $O(V + E)$
 * Perform a DFS traversal from every vertex in the graph while maintaining marked vertices across traversals.
@@ -34,7 +37,7 @@ Visualizing dynamic programming questions through the DAG lens allows us to capt
 
 # Examples
 ## [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
-**Problem:** Given an array $A$ of values, find the longest increasing subsequence, that is, a consecutively increasing subsequence $(a_n)$, where for $i\in {1,...,n-1}$, $a_i>a_{i-1}$. Aim for Remember:
+**Problem:** Given an array $A$ of values, find the longest increasing subsequence, that is, a consecutively increasing subsequence $(a_n)$, where for $i\in {1,...,n-1}$, $a_i>a_{i-1}$. Remember:
 1. Find subproblems
 2. Topologically Sort
 3. Apply your logic
@@ -67,9 +70,9 @@ int lengthOfLIS(vector<int>& A) {
 ```
 $\boxed{ }$
 ## [Maximum Height by Stacking Cuboids](https://leetcode.com/problems/maximum-height-by-stacking-cuboids/)
-**Problem:** Given `n` cuboids where the dimensions of the `ith` cuboid is`A[i] = [width_i, length_i, height_i]` (**0-indexed**). Choose a **subset** of cuboids and place them on each other.
+**Problem:** Given $n$ cuboids where the dimensions of the $ith$ cuboid is $A[i] = [width_i, length_i, height_i]$ (**0-indexed**). Choose a **subset** of cuboids and place them on each other.
 
-You can place cuboid `i` on cuboid `j` if `width_i <= widthj` and `length_i <= length_j` and `height_i <= height_j`. You can rearrange any cuboid's dimensions by rotating it to put it on another cuboid.
+You can place cuboid $i$ on cuboid $j$ if $width_i <= widthj$ and $length_i <= length_j$ and $height_i <= height_j$. You can rearrange any cuboid's dimensions by rotating it to put it on another cuboid.
 
 Return _the **maximum height** of the stacked_ cuboids.
 
