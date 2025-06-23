@@ -11,7 +11,7 @@ Amateur programmers (like myself), recall dynamic programming as the technique w
 ## An Introduction to Directed Acyclic Graphs (DAGs)
 Solving problems is all about identifying connections between bits of information. What better structure can we use to portray connections within a set of objects than a graph? More specifically, a Directed Acyclic Graph is a directed graph with no {{< sidenote "directed cycles" >}}A graph cycle with all edges pointing in the same direction{{< /sidenote >}}. In this article, we call $u$ a *pre-requisite* of $v$ if there exists an edge going out from $u$ to $v$. Likewise, $v$ is a *dependency* of $u$. 
 
-![Directed Acyclic Graph](/blog/images/dynamic_programming_intuition/DAG.png)
+![Directed Acyclic Graph](/images/dynamic_programming_intuition/DAG.png)
 
 It should be intuitive why a DAG is often referred to as a dependency graph by programmers. It provides a structure that encapsulates information about all the dependencies that is required by a certain service, process, and in our case, problem. A **topological sort** of a DAG is an ordering of the vertices $V$, such that all the dependencies of $u$ appears before $u$ itself. In the Such a sort allows us to traverse the graph from pre-requisite to dependency. A toplogical sort exists for all DAGs, but not all directed graphs. Do you see why?
 
@@ -45,7 +45,7 @@ Visualizing dynamic programming questions through the DAG lens allows us to capt
 
 It may not be obvious, but the input data is already topologically sorted for us. The input array has increasing element indices, so condition 1 is satisfied. We do not even need to sort condition two, as we may just manually filter out larger preceding elements. Here is a linearization of the topological sort of the DAG for test case $[9,1,4,2,3,3,7]$. 
 
-![LIS Linearization](/blog/images/dynamic_programming_intuition/linearization.png)
+![LIS Linearization](/images/dynamic_programming_intuition/linearization.png)
 
 As we can see, the longest increasing subsequence has a length of 4, more importantly, this is the same as the length of the longest path in our DAG! Hence, we have applied a very important concept in computing theory-- We used {{< sidenote "reduction" >}}Transforming an often challenging problem into an existing problem whose solution is known{{< /sidenote >}} to transform the Longest Increasing Subsequences problem to the DAG longest path problem! 
 
@@ -77,7 +77,7 @@ Return _the **maximum height** of the stacked_ `cuboids`.
 
 To maximize the height of what we can achieve, we first sort all triplets such that the last index indicates height. This automatically ensures all cuboids have been rotated such that they are standing at their tallest. From here, we apply what we know about DAGs and DP. We try to visualize the test case $[[50,45,20],[95,37,53],[45,23,12]]$, which after sorting the individual elements, becomes $[[20,45,50],[37,53,95],[12,23,45]]$. Now for each pair of elements $x,y$ in our problem space, $x$ is a pre-requisite for solving $y$ iff all dimensions of $x$ are bigger than $y$. Our DP-DAG would look like this:
 
-![Cuboid DAG](/blog/images/dynamic_programming_intuition/cuboid_DAG.png)
+![Cuboid DAG](/images/dynamic_programming_intuition/cuboid_DAG.png)
 
 We note that the solution $190$ is simply the three cuboids rotated, and stacked on top of each other. This also happens to be the path in our DAG that maximizes height.
 
