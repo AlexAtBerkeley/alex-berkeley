@@ -5,6 +5,7 @@ categories:
   - Statistics
   - Forecasting
   - Holt-Winters
+  - Python
 description: An intuition-driven introduction to industry-standard time-series forecasting with Holt-Winters.
 ---
 Imagine trying to model monthly ice cream sales. How would we go about this? A good first thing to consider is the *number* of cones we'd expect to sell in a "typical" month. Moreover, if ice cream becomes more popular or the store introduces some great flavors, we might expect the monthly sales to *grow* month over month! Finally, we might consider *when* people tend to buy ice cream --- sales likely tend to be highest around mid-summer when temperatures are hottest in most areas, and lowest around mid-winter when temperatures are coolest (unless you're a winter-only ice cream eater like me).
