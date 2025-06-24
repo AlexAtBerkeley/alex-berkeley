@@ -5,6 +5,7 @@ categories:
   - Algorithms
   - DAGs
   - Dynammic Programming
+  - C++
 description: All dynamic programming problems may be modeled as a DAG of sub problems. Once you topologically sort that DAG, even tricky challenges, like finding the longest increasing subsequence or stacking cuboids, become as simple as tracing the longest path through your map.
 ---
 
@@ -16,7 +17,7 @@ Solving problems is all about identifying connections between bits of informatio
 
 ![Directed Acyclic Graph](/images/dynamic_programming_intuition/DAG.png)
 
-It should be intuitive why a DAG is often referred to as a dependency graph by programmers. It provides a structure that encapsulates information about all the dependencies that is required by a certain service, process, and in our case, problem. A **topological sort** of a DAG is an ordering of the vertices $V$, such that all the dependencies of $u$ appears before $u$ itself. Such a sort allows us to traverse the graph from pre-requisite to dependency. A toplogical sort exists for all DAGs, but not all directed graphs. Do you see why?
+It should be intuitive why a DAG is often referred to as a dependency graph by programmers. It provides a structure that encapsulates information about all the dependencies that is required by a certain service, process, and in our case, problem. A **topological sort** of a DAG is an ordering of the vertices $V$, such that all the dependencies of $u$ appears before $u$ itself. Such a sort allows us to traverse the graph from pre-requisite to dependency. A toplogical sort exists for all DAGs, but not all directed graphs.  {{< backlink "dag-toposort-proof" "Do you see why?"  >}} 
 
 ### The Topological Sort Algorithm $O(V + E)$
 * Perform a DFS traversal from every vertex in the graph while maintaining marked vertices across traversals.
