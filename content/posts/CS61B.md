@@ -1,7 +1,7 @@
-+++
-date = '2025-06-09T16:49:47-07:00'
-title = 'CS61B Data Structures'
-+++
+---
+date: '2025-06-09T16:49:47-07:00'
+title: 'CS61B Data Structures'
+---
 
 # CS61B Data structures
 
