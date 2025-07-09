@@ -165,3 +165,5 @@ Find out the answer to these and more in the sequel of this blog! Which should h
 Thought Gradient Descent might have a scary name, it's intuition is simple. And it's performance? Elegant.
 
 ![Meme](/images/demystifying_gradient_descent/meme.png)
+
+Find the full code for this blog at this [notebook](https://github.com/AlexAtBerkeley/alex-berkeley/blob/main/content/notebooks/gradient_descent.ipynb)
