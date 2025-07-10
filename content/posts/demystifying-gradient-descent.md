@@ -11,19 +11,19 @@ categories:
 description: How does gradient descent iteratively discover local minimas? How exactly was this algorithm invented from the ground up? What are the limitations of traditional gradient descent?
 ---
 # A Motivation for Gradient Descent
-Imagine you are training a exceedingly simple machine at a equally basic task: throwing darts on a board. The objective is to get the darts to land as closely to the center as possible, since we want the bullseye. However, the machine itself has no spatial awareness. It only knows a couple things, where the dart it threw landed, and throwing the dart at a specific angle. How can we design an algorithm for the agent to discover the most optimal way of throwing the dart?
+Imagine you are training a simple machine at a basic task: throwing darts on a board. The objective is to land darts as close to the center (the bullseye) as possible. However, the machine has no spatial awareness; it only knows the angle at which it threw the dart and where it landed. How can we design an algorithm that helps the machine discover the optimal throwing angle?
 
-We recall a powerful idea learned from high-school calculus: optimization. To do that, we must represent the performance of the dart throwing machine with a mathematical function, which we'll call the {{< sidenote "loss function" >}}A function that measures the loss, or error, of an action or result produced by our machine/model.{{< /sidenote >}} $L(\theta)$. The higher the loss? The further away the dart was from the center of the board. Thus, minimizing this loss function will result in darts closer to the center of the board, hence, a better accuracy.
+We recall a powerful idea learned from high-school calculus: optimization. To formalize this, we introduce a loss function $L(\theta)$ that measures the error of our machine’s performance. The farther the dart lands from the center, the higher the loss. Minimizing $L(\theta)$ will yield throws closer to the bullseye.
 
 ## Optimization, and Its Subtle Challenge
-In calculus, optimization discovers the local extrema of a function through the derivative (or "gradient" for higher dimensional functions). By discovering locations where the derivate changes signs, we can find where the slope of the function changes, which would indicate values in the neighborhood of the function are all less than, or greater than the function value, hence, "local". In formal mathematical language, a local maxima $y$ of a 2-dimensional space $A$ may be expressed as follows:
-$$\forall x\in A, s.t. |x-y|<\delta\implies f(y)\geq f(x)$$
-Where $\delta$ is the radius of the neighborhood we constrain the maxima to. An intuitive and physical lens at optimizing functions (for finding minima) is to imagine yourself as a raindrop guided by gravity to glide across the surface of the function, until you finally settle in some puddle in the surface. Note, this doesn't have to be the deepest puddle ever, as long as you are trapped in a ditch, no matter how small, you {{< sidenote "stay there" >}}This might not be the case of Stochastic Gradient Descent{{< /sidenote >}} . 
+In calculus, optimization locates extrema of a function by analyzing the derivative (or "gradient" for higher dimensional functions). Points where the derivative changes sign indicate local maxima or minima. In formal mathematical language, a point $y$ is a local minima of a function $f$ over a domain $A$ if:
+$$\forall x\in A, |x-y|<\delta\implies f(y)\geq f(x)$$
+For some neighborhood radius $\delta$. An intuitive and physical analogy of optimizing is to imagine yourself as a raindrop guided by gravity to glide across the surface of the function, until you finally settle in a puddle in the surface. Note, this doesn't have to be the deepest puddle ever (i.e. the global minimum), as long as you are trapped in a ditch, no matter how small, you {{< sidenote "stay there" >}}This might not be the case of Stochastic Gradient Descent{{< /sidenote >}} . 
 
-The challenge that comes with function optimizing however, is that the loss function is often complex, and difficult to find a closed, algebraic solution to 
+The challenge that comes with function optimizing however, is that the loss function is often complex (especially in deep learning), and difficult to find a closed, algebraic solution to 
 $\text{arg} \min_{\theta}L(\theta)$. The main three factors are due to:
 1. **High Dimensionality:** Modern deep learning models tend to have upwards of hundreds of millions and billions of parameters. Mapping out all the combinations of these parameters and discovering a closed form equation for all such parameters is mathematically infeasible. In addition, we would have a system of countless non-linear equations with many variables. Just too complicated.
-2. **Critical Values:** Even if it were possible to discover a closed form equation of our model, with all its parameters, sorting through the critical values is another story. Simply put, critical values can be understood as points where the second partial derivative of a particular function is 0 or undefined. We would then have to sort through every single critical value (which is a combination of our billions of parameters, could be an even larger number!) and categorize them into maxima, minima, and saddle points. We would then need to arduously discover what the global minimum is.
+2. **Critical Values:** Even if it were possible to discover a closed form equation of our model, with all its parameters, sorting through the critical values is another story. Simply put, critical values can be understood as points where the second partial derivative of a particular function is 0 or undefined. We would then have to sort through every single critical value (which there can be billions!) and categorize them into maxima, minima, and saddle points. We would then need to arduously discover what the global minimum is.
 3. **Symbolic Differentiation:** Implementing symbolic differentiation on an arbitrary function, is surprisingly a very compute-heavy task!
 With these limitations in mind. It's crucial for us to find an alternative approach to discovering minima. This presents an exigency for gradient descent.
 
@@ -58,7 +58,7 @@ We try a very simple approach first. At each learning step, we descend by a {{< 
 ![Learning Rates](/images/demystifying_gradient_descent/learning_rates.jpeg)
 
 The update logic of this algorithm is quite simple:
-$$\text{grad}=\text{grad} + -1\cdot\text{sgn}(\nabla L(\theta))\cdot\eta$$
+$$\theta_{k+1}=\theta_{k} -\text{sgn}(\nabla L(\theta_k))\cdot\eta$$
 We also specify the number of iterations that our model should take before it stops descending, and optionally, a loss threshold where our model prematurely stops too. Our implementation will return a history of the gradient updates, so we can see how model performance changes over iterations.
 
 {{< admonition type="warning" title="Important" >}} 
@@ -96,9 +96,10 @@ From our little experiment, we see that increasing the learning_rate, iterations
 
 ![Constant GD Performance](/images/demystifying_gradient_descent/constant_gd_trajectories.png)
 
-Some interesting things to note from the plot. We see two identical minima both at $L(\theta) = 0$. This is consistent with our problem statement, as experienced physics students know that projectile problems like this tend to have two solutions! One solution that shoots at some lower angel $\theta_1$, and another solution that shoots at angle $90^{\circ} - \theta_1$. 
+Some interesting things to note from the plot. We see two identical minima both at $L(\theta) = 0$. This is consistent with our problem statement, as experienced physics students know that projectile problems like this tend to have two solutions! One solution that shoots at some lower angle $\theta_1$, and another solution that shoots at angle $90^{\circ} - \theta_1$. 
 
-As we can see from the plots, higher learning rates have big jumps that tend to jump over small local minima. This is especially evident in lr=0.2, where the optimized parameter jumps between two identical values without ever converging to the bottom of the curve. Decreasing the learning rate makes every step we take smaller and smaller, and we make small incremental inches towards the bottom of the curve. 
+
+Note. Higher $\eta$ speeds up descent but risks overshooting (lr=0.2); smaller $\eta$ improves precision but slows convergence.
 
 Though our current implementation works, we have to struggle and test until we have the perfect parameters to find a given minima. In higher-dimension loss functions, it is difficult to visualize where the minima are, and their exact size. We'd need a more dynamic approach that "slows" down the learning rate once we enter a minima. Enter: the traditional gradient descent.
 
@@ -106,17 +107,17 @@ Though our current implementation works, we have to struggle and test until we h
 From now on, we will use the following baseline to evaluate our algorithms:
 $$ \text{lrs}=[1, 0.1, 0.01, 0.001, 0.0001, 0.00001]$$
 $$ \text{iterations}=[1, 10, 100, 1000, 10000, 100000]$$
-$$thresholds=[0.001, 0.001, 0.001, 0.001, 0.001, 0.001]$$
+$$\text{thresholds}=[0.001, 0.001, 0.001, 0.001, 0.001, 0.001]$$
 Re-evaluating `constant_descent` yields these graphs, which we will use as ground for comparisons:
 
 ![Ground](/images/demystifying_gradient_descent/ground.png)
 
-Back to the implementations. Here's an important observation about gradients. The closer we get to the center of a minima, the magnitude of the gradient decreases as the "curved surface" flattens out. We can take advantage of this behavior to reduce our learning rate the flatter a curve becomes. This ensures that we overshoot the minima of the function less, the closer we get to an optimized value. Intuitively, it would look like this:
+Back to the implementations. Here's an important observation about gradients. The closer we get to the center of a minima, $|\nabla L(\theta)|$ decreases as the "curved surface" flattens out. We use this to reduce our step-size as $\theta_k$ approaches a minimum. This ensures that we overshoot the minima of the function less, the closer we get to an optimized value. Intuitively, it would look like this:
 
 ![Decreasing Learning Rates](/images/demystifying_gradient_descent/decreasing_learning_rates.png)
 
-Implementing this is just a small edit to our update function, where we now update the `grad` as such:
-$$\text{grad} = \text{grad} - \nabla L(\theta)\cdot\cdot\eta$$
+Implementing this is just a small edit to our update function, where we now update $\theta$ with the true gradient
+$$\theta_{k+1} = \theta_k - \nabla L(\theta_k)\cdot \eta$$
 The implications of this are powerful. At larger gradients greater than 1, our step sizes get amplified so we move further, at smaller gradients lesser than 1, our step sizes get smaller so we gain precision while moving closer to our target value.
 ```python
 def gradient_descent(learning_rate=0.001, iterations=10000, threshold = 0.1, initial_theta=0, use_threshold=False):
@@ -162,8 +163,8 @@ Congratulations! If you made it this far, you know know how to implement your ow
 4. How can we efficiently calculate a gradient?
 Find out the answer to these and more in the sequel of this blog! Which should hopefully, come very soon.
 
-Thought Gradient Descent might have a scary name, it's intuition is simple. And it's performance? Elegant.
+Although Gradient Descent has a scary name, it's intuition is simple, and it's performance is elegant.
 
 ![Meme](/images/demystifying_gradient_descent/meme.png)
 
-Find the full code for this blog at this [notebook](https://github.com/AlexAtBerkeley/alex-berkeley/blob/main/content/notebooks/gradient_descent.ipynb)
+Find the full code for this blog at this [notebook](https://github.com/AlexAtBerkeley/alex-berkeley/blob/main/content/notebooks/gradient_descent.ipynb).
